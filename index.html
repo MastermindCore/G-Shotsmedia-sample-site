@@ -1,554 +1,679 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>G-Shots Media | Guarding Your Memories</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>G-Shots Media | Guarding Your Memories</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-    :root {
-      --gold: #c9a84c;
-      --gold-light: #e8c97a;
-      --dark: #0d0d0d;
-      --dark2: #161616;
-      --cream: #f5f0e8;
-      --muted: #888;
-    }
+:root {
+  --ink:    #0a0a0a;
+  --white:  #f8f4ef;
+  --cream:  #f0ebe2;
+  --muted:  #888;
+  --border: rgba(0,0,0,0.08);
+  --gold:   #c9933a;
+  --gold-l: #dba94e;
+}
 
-    html, body {
-      width: 100%; height: 100%;
-      background: var(--dark);
-      color: var(--cream);
-      font-family: 'Barlow', sans-serif;
-      overflow-x: hidden;
-    }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--white);
+  color: var(--ink);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: none;
+}
 
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 24px 48px;
-      background: linear-gradient(to bottom, rgba(13,13,13,0.95), transparent);
-    }
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem; font-weight: 900; letter-spacing: 2px;
-      color: var(--gold);
-    }
-    .logo span { color: var(--cream); font-weight: 400; }
-    nav ul { display: flex; gap: 36px; list-style: none; }
-    nav ul a {
-      font-size: 0.8rem; font-weight: 500; letter-spacing: 2px;
-      text-transform: uppercase; color: var(--cream); text-decoration: none;
-      opacity: 0.7; transition: opacity 0.3s, color 0.3s;
-    }
-    nav ul a:hover { opacity: 1; color: var(--gold); }
-    .nav-cta {
-      background: transparent; border: 1px solid var(--gold);
-      color: var(--gold) !important; opacity: 1 !important;
-      padding: 8px 20px; transition: background 0.3s !important;
-    }
-    .nav-cta:hover { background: var(--gold) !important; color: var(--dark) !important; }
+/* ── CURSOR ── */
+#cur { position: fixed; z-index: 9999; pointer-events: none; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); transform: translate(-50%,-50%); transition: width .25s, height .25s; }
+#cur-r { position: fixed; z-index: 9998; pointer-events: none; width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(201,147,58,.35); transform: translate(-50%,-50%); transition: width .3s, height .3s; }
+body.hov #cur { width: 14px; height: 14px; }
+body.hov #cur-r { width: 52px; height: 52px; }
 
-    /* ── HERO ── */
-    #hero {
-      position: relative; width: 100%; min-height: 100vh;
-      display: flex; align-items: center;
-      overflow: hidden;
-    }
+/* ════════════════════════════════════
+   NAV
+════════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 600;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 28px 56px;
+  mix-blend-mode: difference;
+}
+.n-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem; font-weight: 600; letter-spacing: 7px;
+  text-transform: uppercase; color: #fff;
+  text-decoration: none;
+}
+.n-links { display: flex; align-items: center; gap: 40px; list-style: none; }
+.n-links a {
+  font-size: .58rem; letter-spacing: 3px; text-transform: uppercase;
+  color: #fff; text-decoration: none; opacity: .55; transition: opacity .3s;
+}
+.n-links a:hover { opacity: 1; }
+.n-tel {
+  font-size: .58rem; letter-spacing: 3px; text-transform: uppercase;
+  color: #fff; text-decoration: none; opacity: 1;
+  border-bottom: 1px solid rgba(255,255,255,.35); padding-bottom: 2px;
+}
 
-    /* Background grain */
-    #hero::before {
-      content: '';
-      position: absolute; inset: 0; z-index: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none; opacity: 0.4;
-    }
+/* ════════════════════════════════════
+   HERO
+════════════════════════════════════ */
+#hero {
+  position: relative;
+  width: 100%; height: 100vh;
+  overflow: hidden;
+  background: #111;
+}
 
-    /* ── MOSAIC GRID ── */
-    .mosaic {
-      position: absolute; right: 0; top: 0; bottom: 0;
-      width: 55%; display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-template-rows: 1fr 1fr 1fr;
-      gap: 6px; padding: 6px;
-    }
+/* ── COLLAGE STAGE ── */
+#stage {
+  position: absolute; inset: 0;
+  /* photos are absolutely placed via JS */
+}
 
-    .mosaic-cell {
-      position: relative; overflow: hidden;
-      background: #1a1a1a;
-    }
+/* Each photo tile */
+.tile {
+  position: absolute;
+  overflow: hidden;
+  will-change: transform, opacity;
+  box-shadow: 0 8px 32px rgba(0,0,0,.45);
+  opacity: 0;
+  /* initial transform set by JS */
+}
+.tile img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(20%) brightness(.88);
+  transition: filter .4s;
+}
+.tile:hover img { filter: grayscale(0%) brightness(1); }
 
-    /* Special spanning cells */
-    .mosaic-cell:nth-child(1) { grid-column: 1 / 3; grid-row: 1 / 3; }
-    .mosaic-cell:nth-child(2) { grid-column: 3; grid-row: 1; }
-    .mosaic-cell:nth-child(3) { grid-column: 3; grid-row: 2; }
-    .mosaic-cell:nth-child(4) { grid-column: 1; grid-row: 3; }
-    .mosaic-cell:nth-child(5) { grid-column: 2; grid-row: 3; }
-    .mosaic-cell:nth-child(6) { grid-column: 3; grid-row: 3; }
+/* popped state */
+.tile.popped {
+  opacity: 1;
+  /* transform reset by JS transition */
+}
 
-    .mosaic-cell img {
-      width: 100%; height: 100%; object-fit: cover;
-      display: block;
-      transform: scale(1.08);
-      transition: transform 8s ease;
-    }
-    .mosaic-cell.loaded img { transform: scale(1); }
+/* ── OVAL CENTER BADGE ── */
+#oval {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(.6);
+  z-index: 20;
+  width: clamp(300px, 38vw, 520px);
+  height: clamp(180px, 22vw, 310px);
+  background: var(--ink);
+  border-radius: 50%;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 0;
+  opacity: 0;
+  transition: transform 1s cubic-bezier(0.34,1.3,0.64,1) 0s,
+              opacity .6s ease 0s;
+  /* inner glow ring */
+  box-shadow:
+    0 0 0 2px rgba(201,147,58,.55),
+    0 0 0 10px rgba(10,10,10,.9),
+    0 32px 80px rgba(0,0,0,.7);
+}
+#oval.reveal {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
 
-    /* Gold shimmer overlay on cells */
-    .mosaic-cell::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(201,168,76,0.15) 0%, transparent 60%);
-      pointer-events: none;
-    }
+.oval-tag {
+  font-size: .48rem; letter-spacing: 6px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 14px;
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .6s ease .3s, transform .6s ease .3s;
+}
+.oval-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4.5vw, 4.2rem);
+  font-weight: 700; letter-spacing: 6px;
+  text-transform: uppercase; color: #fff;
+  line-height: 1; text-align: center;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity .7s ease .45s, transform .7s ease .45s;
+}
+.oval-name em {
+  display: block; font-style: italic; font-weight: 300;
+  font-size: .55em; letter-spacing: 8px;
+  color: rgba(255,255,255,.45); margin-top: 4px;
+}
+.oval-rule {
+  width: 0; height: 1px; background: var(--gold);
+  margin: 14px 0;
+  transition: width 1s ease .7s;
+}
+.oval-slogan {
+  font-size: .46rem; letter-spacing: 5px; text-transform: uppercase;
+  color: rgba(255,255,255,.4);
+  opacity: 0; transform: translateY(8px);
+  transition: opacity .6s ease .9s, transform .6s ease .9s;
+}
 
-    /* ── ANIMATION: cells slide in from different directions ── */
-    .mosaic-cell {
-      opacity: 0;
-      transition: opacity 0.0s;
-    }
+/* inner text revealed */
+#oval.reveal .oval-tag,
+#oval.reveal .oval-name,
+#oval.reveal .oval-slogan { opacity: 1; transform: translateY(0); }
+#oval.reveal .oval-rule   { width: 60%; }
 
-    /* Each cell starts from a different offscreen position */
-    .mosaic-cell:nth-child(1) { transform: translate(-60px, -60px) scale(0.92); }
-    .mosaic-cell:nth-child(2) { transform: translate(60px, -60px) scale(0.92); }
-    .mosaic-cell:nth-child(3) { transform: translate(60px, 0px) scale(0.92); }
-    .mosaic-cell:nth-child(4) { transform: translate(-60px, 60px) scale(0.92); }
-    .mosaic-cell:nth-child(5) { transform: translate(0px, 60px) scale(0.92); }
-    .mosaic-cell:nth-child(6) { transform: translate(60px, 60px) scale(0.92); }
+/* Scroll hint */
+#scroll-hint {
+  position: absolute; bottom: 36px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 21;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  opacity: 0; transition: opacity 1s ease 1.8s;
+}
+#oval.reveal ~ #scroll-hint { opacity: 1; }
+.sh-line {
+  width: 1px; height: 44px; background: rgba(255,255,255,.3);
+  transform-origin: top;
+  animation: shPulse 2.2s ease infinite;
+}
+@keyframes shPulse {
+  0%   { transform: scaleY(0); opacity: 0; }
+  40%  { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1) translateY(44px); opacity: 0; }
+}
+.sh-text { font-size: .46rem; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,.3); }
 
-    .mosaic-cell.animate-in {
-      opacity: 1;
-      transform: translate(0, 0) scale(1) !important;
-      transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-                  transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-    }
+/* ════════════════════════════════════
+   ABOUT
+════════════════════════════════════ */
+#about {
+  display: grid; grid-template-columns: 1fr 1fr;
+  background: var(--white);
+}
+.ab-img {
+  position: relative; overflow: hidden; min-height: 70vh;
+}
+.ab-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: saturate(.8);
+  transition: filter .8s, transform 8s;
+}
+.ab-img:hover img { filter: saturate(1); transform: scale(1.03); }
+.ab-badge {
+  position: absolute; bottom: 0; left: 0;
+  background: var(--ink); color: var(--white);
+  padding: 14px 28px;
+  font-size: .52rem; letter-spacing: 5px; text-transform: uppercase;
+}
 
-    /* Flash effect when image snaps into place */
-    .mosaic-cell .flash {
-      position: absolute; inset: 0; z-index: 5;
-      background: rgba(201,168,76,0.25);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.15s;
-    }
-    .mosaic-cell.flashing .flash { opacity: 1; }
+.ab-copy {
+  padding: 100px 72px;
+  display: flex; flex-direction: column; justify-content: center;
+  border-left: 1px solid var(--border);
+}
+.s-tag { font-size: .52rem; letter-spacing: 6px; text-transform: uppercase; color: var(--gold); margin-bottom: 22px; }
+.ab-copy h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 3.2vw, 3.6rem); font-weight: 600; line-height: 1.2;
+  margin-bottom: 28px; color: var(--ink);
+}
+.ab-copy h2 em { font-style: italic; color: var(--gold); font-weight: 400; }
+.ab-copy p { font-size: .84rem; line-height: 2.1; color: #666; max-width: 400px; margin-bottom: 16px; }
 
-    /* Image placeholder shimmer */
-    .mosaic-cell .shimmer {
-      position: absolute; inset: 0;
-      background: linear-gradient(90deg, #1a1a1a 25%, #222 50%, #1a1a1a 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.5s infinite;
-      z-index: 1;
-    }
-    @keyframes shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-    .mosaic-cell.loaded .shimmer { display: none; }
+.nums {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 0; margin-top: 52px;
+  border-top: 1px solid var(--border); padding-top: 40px;
+}
+.num-n {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.8rem; font-weight: 700; color: var(--gold); line-height: 1;
+}
+.num-l { font-size: .5rem; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
 
-    /* ── HERO TEXT ── */
-    .hero-text {
-      position: relative; z-index: 10;
-      width: 48%; padding: 120px 0 80px 48px;
-    }
+/* ════════════════════════════════════
+   SERVICES
+════════════════════════════════════ */
+#services { background: var(--cream); padding: 112px 56px; }
+.sv-head {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: end;
+  margin-bottom: 72px; padding-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+}
+.sv-head h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.4rem, 4.5vw, 5rem); font-weight: 600; line-height: 1;
+  color: var(--ink);
+}
+.sv-head h2 em { font-style: italic; color: var(--gold); font-weight: 400; }
+.sv-head p { font-size: .82rem; line-height: 2; color: #777; max-width: 360px; }
 
-    .eyebrow {
-      font-size: 0.7rem; font-weight: 600; letter-spacing: 5px;
-      text-transform: uppercase; color: var(--gold);
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-      margin-bottom: 20px;
-    }
+.sv-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; }
+.sv-card {
+  background: var(--white); padding: 52px 40px;
+  border-top: 2px solid transparent;
+  transition: border-color .3s, transform .3s;
+}
+.sv-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+.sv-card:hover .sv-n { color: var(--gold); }
+.sv-n {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.2rem; font-weight: 700; color: var(--border);
+  line-height: 1; margin-bottom: 28px; transition: color .3s;
+  color: rgba(0,0,0,.08);
+}
+.sv-name { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 600; margin-bottom: 12px; }
+.sv-desc { font-size: .78rem; line-height: 1.9; color: #777; }
 
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(3rem, 5vw, 5.5rem);
-      font-weight: 900; line-height: 1.05;
-      letter-spacing: -1px;
-      opacity: 0; transform: translateY(30px);
-      transition: opacity 0.9s ease 0.15s, transform 0.9s ease 0.15s;
-    }
-    h1 em {
-      font-style: italic; color: var(--gold);
-      display: block;
-    }
+/* ════════════════════════════════════
+   PHOTO ROW
+════════════════════════════════════ */
+.photo-row {
+  display: grid; grid-template-columns: 1fr 1.6fr 1fr;
+  height: 420px; gap: 2px;
+}
+.pr-cell { overflow: hidden; }
+.pr-cell img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: saturate(.75);
+  transition: filter .5s, transform 6s;
+}
+.pr-cell:hover img { filter: saturate(1); transform: scale(1.05); }
 
-    .slogan {
-      font-family: 'Playfair Display', serif;
-      font-style: italic; font-size: 1rem;
-      color: var(--muted); margin-top: 16px;
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
-    }
+/* ════════════════════════════════════
+   CTA
+════════════════════════════════════ */
+#cta {
+  background: var(--ink);
+  display: grid; grid-template-columns: 1fr 1fr;
+  min-height: 55vh;
+}
+.ct-left {
+  padding: 96px 72px;
+  display: flex; flex-direction: column; justify-content: center;
+  border-right: 1px solid rgba(255,255,255,.06);
+}
+.ct-left .s-tag { color: rgba(201,147,58,.8); }
+.ct-left h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 3.8vw, 4.2rem); font-weight: 600; line-height: 1.1;
+  color: var(--white); margin-bottom: 20px;
+}
+.ct-left h2 em { font-style: italic; color: var(--gold); font-weight: 400; }
+.ct-left p { font-size: .82rem; line-height: 2.1; color: #666; max-width: 380px; }
 
-    .hero-desc {
-      font-size: 0.95rem; line-height: 1.8;
-      color: #aaa; max-width: 380px; margin-top: 28px;
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 0.8s ease 0.45s, transform 0.8s ease 0.45s;
-    }
+.ct-right {
+  padding: 96px 72px;
+  display: flex; flex-direction: column; justify-content: center; gap: 32px;
+  background: #0e0e0e;
+}
+.ct-tel {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 3.5vw, 3.8rem); font-weight: 400;
+  color: var(--white); text-decoration: none; letter-spacing: 3px;
+  display: flex; align-items: center; gap: 20px;
+  transition: color .3s;
+}
+.ct-tel::before { content: ''; width: 44px; height: 1px; background: var(--gold); flex-shrink: 0; }
+.ct-tel:hover { color: var(--gold); }
+.ct-note { font-size: .78rem; line-height: 2; color: #555; max-width: 340px; }
+.btn-row { display: flex; gap: 14px; flex-wrap: wrap; }
+.btn-g {
+  display: inline-block; background: var(--gold); color: var(--ink);
+  font-size: .58rem; font-weight: 500; letter-spacing: 4px; text-transform: uppercase;
+  padding: 14px 40px; text-decoration: none;
+  transition: background .3s, transform .2s;
+}
+.btn-g:hover { background: var(--gold-l); transform: translateY(-2px); }
+.btn-o {
+  display: inline-block; border: 1px solid rgba(255,255,255,.12); color: #666;
+  font-size: .58rem; letter-spacing: 4px; text-transform: uppercase;
+  padding: 14px 40px; text-decoration: none;
+  transition: border-color .3s, color .3s;
+}
+.btn-o:hover { border-color: var(--gold); color: var(--gold); }
 
-    .hero-actions {
-      display: flex; align-items: center; gap: 24px;
-      margin-top: 44px;
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 0.8s ease 0.6s, transform 0.8s ease 0.6s;
-    }
+/* ════════════════════════════════════
+   FOOTER
+════════════════════════════════════ */
+footer {
+  background: #070707;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 40px 56px;
+  border-top: 1px solid rgba(255,255,255,.04);
+}
+.f-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem; font-weight: 600; letter-spacing: 6px;
+  color: var(--white);
+}
+.f-logo span { color: var(--gold); }
+.f-links { display: flex; gap: 32px; }
+.f-links a { font-size: .55rem; letter-spacing: 3px; text-transform: uppercase; color: #444; text-decoration: none; transition: color .3s; }
+.f-links a:hover { color: var(--white); }
+.f-copy { font-size: .55rem; letter-spacing: 2px; text-transform: uppercase; color: #333; }
 
-    .btn-primary {
-      background: var(--gold); color: var(--dark);
-      padding: 14px 32px; font-size: 0.8rem;
-      font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
-      border: none; cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
-      text-decoration: none; display: inline-block;
-    }
-    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+/* ════════════════════════════════════
+   SCROLL REVEAL
+════════════════════════════════════ */
+.rv { opacity: 0; transform: translateY(28px); transition: opacity .9s ease, transform .9s ease; }
+.rv.on { opacity: 1; transform: none; }
+.rv.d1 { transition-delay: .12s; }
+.rv.d2 { transition-delay: .26s; }
+.rv.d3 { transition-delay: .4s; }
 
-    .phone-link {
-      font-size: 0.85rem; color: var(--cream); text-decoration: none;
-      opacity: 0.7; letter-spacing: 1px;
-      transition: opacity 0.3s, color 0.3s;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .phone-link:hover { opacity: 1; color: var(--gold); }
-    .phone-link .icon { font-size: 1rem; }
-
-    /* Gold divider line */
-    .gold-line {
-      width: 0; height: 2px; background: var(--gold);
-      margin-top: 40px;
-      transition: width 1.2s ease 0.8s;
-    }
-
-    /* Stat row */
-    .stats {
-      display: flex; gap: 48px; margin-top: 40px;
-      opacity: 0; transform: translateY(20px);
-      transition: opacity 0.8s ease 1s, transform 0.8s ease 1s;
-    }
-    .stat-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem; font-weight: 700; color: var(--gold);
-    }
-    .stat-label {
-      font-size: 0.7rem; color: var(--muted);
-      letter-spacing: 2px; text-transform: uppercase;
-      margin-top: 2px;
-    }
-
-    /* ── REVEAL ANIMATION ACTIVE ── */
-    .hero-ready .eyebrow,
-    .hero-ready h1,
-    .hero-ready .slogan,
-    .hero-ready .hero-desc,
-    .hero-ready .hero-actions,
-    .hero-ready .stats {
-      opacity: 1; transform: translateY(0);
-    }
-    .hero-ready .gold-line { width: 80px; }
-
-    /* ── SCROLL INDICATOR ── */
-    .scroll-hint {
-      position: absolute; bottom: 36px; left: 48px;
-      display: flex; align-items: center; gap: 12px;
-      font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase;
-      color: var(--muted); z-index: 10;
-      opacity: 0; transition: opacity 1s ease 2s;
-    }
-    .hero-ready .scroll-hint { opacity: 1; }
-    .scroll-line {
-      width: 40px; height: 1px; background: var(--gold);
-      animation: pulse-line 2s infinite;
-    }
-    @keyframes pulse-line {
-      0%, 100% { opacity: 1; } 50% { opacity: 0.3; }
-    }
-
-    /* ── IMAGE COUNTER ── */
-    .image-counter {
-      position: absolute; bottom: 36px; right: 48px; z-index: 10;
-      font-family: 'Playfair Display', serif;
-      font-size: 0.8rem; color: var(--muted);
-      opacity: 0; transition: opacity 0.4s;
-    }
-    .image-counter.visible { opacity: 1; }
-    .image-counter span { color: var(--gold); font-size: 1.2rem; }
-
-    /* ── SERVICES SECTION (teaser) ── */
-    #services {
-      background: var(--dark2);
-      padding: 100px 48px;
-    }
-    .section-label {
-      font-size: 0.7rem; letter-spacing: 5px; text-transform: uppercase;
-      color: var(--gold); margin-bottom: 16px;
-    }
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2rem, 3.5vw, 3rem);
-      font-weight: 700; margin-bottom: 60px;
-      max-width: 500px;
-    }
-    .services-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
-    }
-    .service-card {
-      background: #111; padding: 48px 36px;
-      border-top: 2px solid transparent;
-      transition: border-color 0.3s, background 0.3s;
-      cursor: default;
-    }
-    .service-card:hover { border-color: var(--gold); background: #161616; }
-    .service-icon { font-size: 2rem; margin-bottom: 24px; }
-    .service-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem; font-weight: 700; margin-bottom: 12px;
-    }
-    .service-desc { font-size: 0.88rem; line-height: 1.7; color: var(--muted); }
-
-    /* ── CONTACT STRIP ── */
-    #contact {
-      background: var(--gold); color: var(--dark);
-      padding: 60px 48px;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .contact-text h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem; font-weight: 900;
-    }
-    .contact-text p { margin-top: 8px; font-size: 0.9rem; opacity: 0.8; }
-    .contact-phone {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem; font-weight: 700; color: var(--dark);
-      text-decoration: none; letter-spacing: 1px;
-      transition: opacity 0.3s;
-    }
-    .contact-phone:hover { opacity: 0.7; }
-    .btn-dark {
-      background: var(--dark); color: var(--gold);
-      padding: 14px 32px; font-size: 0.8rem;
-      font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
-      border: none; cursor: pointer; text-decoration: none;
-      display: inline-block; transition: opacity 0.3s;
-    }
-    .btn-dark:hover { opacity: 0.85; }
-
-    /* ── FOOTER ── */
-    footer {
-      background: #080808; padding: 36px 48px;
-      display: flex; align-items: center; justify-content: space-between;
-      font-size: 0.78rem; color: var(--muted);
-    }
-    footer .logo { font-size: 1.1rem; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      nav { padding: 20px 24px; }
-      nav ul { display: none; }
-      .hero-text { width: 100%; padding: 120px 24px 60px; }
-      .mosaic {
-        position: relative; width: 100%; height: 360px;
-        margin-top: -20px;
-      }
-      #hero { flex-direction: column; min-height: auto; }
-      .services-grid { grid-template-columns: 1fr; }
-      #contact { flex-direction: column; gap: 32px; text-align: center; }
-      .scroll-hint, .image-counter { display: none; }
-    }
-  </style>
+/* ════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════ */
+@media(max-width:860px){
+  nav { padding: 18px 24px; }
+  .n-links { display: none; }
+  #oval { width: 72vw; height: 38vw; }
+  .oval-name { font-size: clamp(1.2rem, 5vw, 2.2rem); }
+  #about { grid-template-columns: 1fr; }
+  .ab-img { min-height: 55vw; }
+  .ab-copy { padding: 56px 24px; border-left: none; border-top: 1px solid var(--border); }
+  #services { padding: 72px 24px; }
+  .sv-head { grid-template-columns: 1fr; gap: 20px; }
+  .sv-grid { grid-template-columns: 1fr 1fr; }
+  .photo-row { grid-template-columns: 1fr 1fr; height: 260px; }
+  .photo-row .pr-cell:last-child { display: none; }
+  #cta { grid-template-columns: 1fr; }
+  .ct-left, .ct-right { padding: 64px 24px; }
+  footer { flex-direction: column; gap: 24px; text-align: center; padding: 36px 24px; }
+  .f-links { flex-wrap: wrap; justify-content: center; }
+}
+</style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
-    <div class="logo">G-Shots <span>Media</span></div>
-    <ul>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#">Portfolio</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#contact" class="nav-cta">Book a Session</a></li>
-    </ul>
-  </nav>
+<div id="cur"></div>
+<div id="cur-r"></div>
 
-  <!-- HERO -->
-  <section id="hero">
+<!-- NAV -->
+<nav>
+  <a href="#" class="n-logo">G·Shots</a>
+  <ul class="n-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#cta">Contact</a></li>
+    <li><a href="tel:0719352493" class="n-tel">0719 352 493</a></li>
+  </ul>
+</nav>
 
-    <!-- Image counter -->
-    <div class="image-counter" id="imageCounter">
-      Loading <span id="counterNum">0</span> / 6
+<!-- ═══════ HERO ═══════ -->
+<section id="hero">
+  <div id="stage"></div>
+
+  <!-- The oval -->
+  <div id="oval">
+    <p class="oval-tag">Nairobi, Kenya</p>
+    <div class="oval-name">
+      G·Shots
+      <em>Media</em>
     </div>
+    <div class="oval-rule"></div>
+    <p class="oval-slogan">Guarding Your Memories</p>
+  </div>
 
-    <!-- Left: text -->
-    <div class="hero-text" id="heroText">
-      <p class="eyebrow">Professional Studio Photography</p>
-      <h1>We Capture<em>Moments That</em>Last Forever</h1>
-      <p class="slogan">— Guarding Your Memories —</p>
-      <p class="hero-desc">
-        G-Shots Media is your premier studio photography partner. From portraits to
-        commercial shoots, we craft images that tell your story with clarity, beauty,
-        and lasting impact.
-      </p>
-      <div class="gold-line"></div>
-      <div class="hero-actions">
-        <a href="#contact" class="btn-primary">Book a Session</a>
-        <a href="tel:0719352493" class="phone-link">
-          <span class="icon">📞</span> 0719 352 493
-        </a>
-      </div>
-      <div class="stats">
-        <div>
-          <div class="stat-num">500+</div>
-          <div class="stat-label">Sessions Done</div>
-        </div>
-        <div>
-          <div class="stat-num">98%</div>
-          <div class="stat-label">Client Satisfaction</div>
-        </div>
-        <div>
-          <div class="stat-num">8+</div>
-          <div class="stat-label">Years Experience</div>
-        </div>
-      </div>
+  <div id="scroll-hint">
+    <div class="sh-line"></div>
+    <span class="sh-text">Scroll</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="ab-img rv">
+    <img src="https://images.unsplash.com/photo-1554080353-a576cf803bda?w=900&q=85" alt="Studio"/>
+    <div class="ab-badge">Est. 2016 · Nairobi</div>
+  </div>
+  <div class="ab-copy">
+    <p class="s-tag rv">Our Philosophy</p>
+    <h2 class="rv">Every frame holds a<br><em>feeling worth keeping.</em></h2>
+    <p class="rv d1">G-Shots Media is Nairobi's premier professional photography studio. We believe a photograph isn't just an image — it's a feeling frozen in light, meant to outlast every passing moment.</p>
+    <p class="rv d2">Over eight years and five hundred sessions, we've built a reputation for images that don't just look beautiful — they feel exactly right.</p>
+    <div class="nums rv d3">
+      <div><div class="num-n">500+</div><div class="num-l">Sessions</div></div>
+      <div><div class="num-n">8+</div><div class="num-l">Years</div></div>
+      <div><div class="num-n">98%</div><div class="num-l">Satisfaction</div></div>
     </div>
+  </div>
+</section>
 
-    <!-- Scroll hint -->
-    <div class="scroll-hint">
-      <div class="scroll-line"></div>
-      Scroll
+<!-- SERVICES -->
+<section id="services">
+  <div class="sv-head">
+    <h2 class="rv">What we<br><em>do best</em></h2>
+    <p class="rv d1">Each service is delivered with the same unhurried attention — because your memories deserve nothing less than everything.</p>
+  </div>
+  <div class="sv-grid">
+    <div class="sv-card rv">
+      <div class="sv-n">01</div>
+      <div class="sv-name">Portraits</div>
+      <div class="sv-desc">Individual, family, and couple portraits with studio-grade lighting and expert retouching.</div>
     </div>
-
-    <!-- Right: mosaic -->
-    <div class="mosaic" id="mosaic">
-      <div class="mosaic-cell" id="cell-0">
-        <div class="shimmer"></div>
-        <div class="flash"></div>
-        <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80" alt="Portrait photography" />
-      </div>
-      <div class="mosaic-cell" id="cell-1">
-        <div class="shimmer"></div>
-        <div class="flash"></div>
-        <img src="https://images.unsplash.com/photo-1554080353-a576cf803bda?w=400&q=80" alt="Studio shot" />
-      </div>
-      <div class="mosaic-cell" id="cell-2">
-        <div class="shimmer"></div>
-        <div class="flash"></div>
-        <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&q=80" alt="Camera" />
-      </div>
-      <div class="mosaic-cell" id="cell-3">
-        <div class="shimmer"></div>
-        <div class="flash"></div>
-        <img src="https://images.unsplash.com/photo-1502982720700-bfff97f2ecac?w=400&q=80" alt="Wedding photography" />
-      </div>
-      <div class="mosaic-cell" id="cell-4">
-        <div class="shimmer"></div>
-        <div class="flash"></div>
-        <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=400&q=80" alt="Professional shoot" />
-      </div>
-      <div class="mosaic-cell" id="cell-5">
-        <div class="shimmer"></div>
-        <div class="flash"></div>
-        <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400&q=80" alt="Landscape" />
-      </div>
+    <div class="sv-card rv d1">
+      <div class="sv-n">02</div>
+      <div class="sv-name">Weddings &amp; Events</div>
+      <div class="sv-desc">Full-day coverage capturing every emotion — the tears, the laughs, the quiet in-between.</div>
     </div>
-  </section>
-
-  <!-- SERVICES -->
-  <section id="services">
-    <p class="section-label">What We Offer</p>
-    <h2 class="section-title">Every Frame Tells a Story Worth Keeping</h2>
-    <div class="services-grid">
-      <div class="service-card">
-        <div class="service-icon">🎭</div>
-        <div class="service-name">Portrait Sessions</div>
-        <p class="service-desc">Individual, family, and corporate portraits crafted with expert lighting, composition, and post-processing to bring out the best in you.</p>
-      </div>
-      <div class="service-card">
-        <div class="service-icon">💍</div>
-        <div class="service-name">Events & Weddings</div>
-        <p class="service-desc">Capturing the emotion and magic of your most important milestones — from engagement shoots to full wedding day coverage.</p>
-      </div>
-      <div class="service-card">
-        <div class="service-icon">📦</div>
-        <div class="service-name">Commercial & Product</div>
-        <p class="service-desc">High-end product photography and commercial shoots that make your brand stand out in any market or medium.</p>
-      </div>
+    <div class="sv-card rv d2">
+      <div class="sv-n">03</div>
+      <div class="sv-name">Corporate</div>
+      <div class="sv-desc">Polished headshots and corporate imagery that position your team with confidence.</div>
     </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="contact-text">
-      <h2>Ready to Create Something Beautiful?</h2>
-      <p>Call us today — let's bring your vision to life.</p>
+    <div class="sv-card rv d3">
+      <div class="sv-n">04</div>
+      <div class="sv-name">Commercial</div>
+      <div class="sv-desc">Campaign-ready photography for brands and products, built to move audiences.</div>
     </div>
-    <a href="tel:0719352493" class="contact-phone">0719 352 493</a>
-    <a href="tel:0719352493" class="btn-dark">Call Now</a>
-  </section>
+  </div>
+</section>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="logo">G-Shots <span style="color:var(--cream);font-weight:400">Media</span></div>
-    <p>© 2025 G-Shots Media. Guarding Your Memories.</p>
-    <p>Nairobi, Kenya</p>
-  </footer>
+<!-- PHOTO ROW -->
+<div class="photo-row">
+  <div class="pr-cell"><img src="https://images.unsplash.com/photo-1502982720700-bfff97f2ecac?w=700&q=85" alt=""/></div>
+  <div class="pr-cell"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=900&q=85" alt=""/></div>
+  <div class="pr-cell"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=700&q=85" alt=""/></div>
+</div>
 
-  <script>
-    // ── Sequential mosaic image animation ──
-    const cells = document.querySelectorAll('.mosaic-cell');
-    const heroText = document.getElementById('heroText');
-    const counter = document.getElementById('imageCounter');
-    const counterNum = document.getElementById('counterNum');
+<!-- CTA -->
+<section id="cta">
+  <div class="ct-left">
+    <p class="s-tag rv">Book a Session</p>
+    <h2 class="rv">Let's create something<br><em>you'll never forget.</em></h2>
+    <p class="rv d1">Whether it's a portrait, a wedding, or a full commercial campaign — reach out and let's talk about what you need.</p>
+  </div>
+  <div class="ct-right">
+    <a href="tel:0719352493" class="ct-tel rv">0719 352 493</a>
+    <p class="ct-note rv d1">Call us directly to book a session, get a quote, or simply ask a question. We're always happy to help.</p>
+    <div class="btn-row rv d2">
+      <a href="tel:0719352493" class="btn-g">Book Now</a>
+      <a href="#services" class="btn-o">Our Services</a>
+    </div>
+  </div>
+</section>
 
-    let currentCell = 0;
-    const DELAY_BETWEEN = 380; // ms between each image appearing
-    const FLASH_DURATION = 200;
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">G<span>·</span>Shots <span style="opacity:.3;font-size:.9rem;letter-spacing:2px">Media</span></div>
+  <div class="f-links">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#cta">Contact</a>
+    <a href="tel:0719352493">0719 352 493</a>
+  </div>
+  <div class="f-copy">© 2025 G-Shots Media · Nairobi</div>
+</footer>
 
-    function animateCell(index) {
-      if (index >= cells.length) {
-        // All images loaded — reveal text
-        setTimeout(() => {
-          counter.classList.remove('visible');
-          heroText.classList.add('hero-ready');
-          document.querySelector('.scroll-hint').closest('#hero').querySelector('.scroll-hint').style.opacity = '1';
-        }, 300);
-        return;
-      }
+<script>
+// ── Cursor
+const cur  = document.getElementById('cur');
+const curR = document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  cur.style.left=mx+'px'; cur.style.top=my+'px';
+});
+(function loop(){
+  rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+  curR.style.left=rx+'px'; curR.style.top=ry+'px';
+  requestAnimationFrame(loop);
+})();
+document.querySelectorAll('a,button,.sv-card,.pr-cell').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+});
 
-      const cell = cells[index];
+// ════════════════════════════════════════
+// HERO COLLAGE
+// ════════════════════════════════════════
+const stage = document.getElementById('stage');
+const oval  = document.getElementById('oval');
+const W = window.innerWidth;
+const H = window.innerHeight;
 
-      // Show counter
-      counter.classList.add('visible');
-      counterNum.textContent = index + 1;
+// Photo sources — 24 images for a dense wall
+const SRCS = [
+  'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=500&q=80',
+  'https://images.unsplash.com/photo-1554080353-a576cf803bda?w=500&q=80',
+  'https://images.unsplash.com/photo-1502982720700-bfff97f2ecac?w=500&q=80',
+  'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500&q=80',
+  'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=500&q=80',
+  'https://images.unsplash.com/photo-1501854140801-50d01698950b?w=500&q=80',
+  'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&q=80',
+  'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=500&q=80',
+  'https://images.unsplash.com/photo-1520390138845-fd2d229dd553?w=500&q=80',
+  'https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=500&q=80',
+  'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&q=80',
+  'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=500&q=80',
+  'https://images.unsplash.com/photo-1519741497674-611481863552?w=500&q=80',
+  'https://images.unsplash.com/photo-1583864697784-a0efc8379f70?w=500&q=80',
+  'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?w=500&q=80',
+  'https://images.unsplash.com/photo-1528892952291-009c663ce843?w=500&q=80',
+  'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&q=80',
+  'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=500&q=80',
+  'https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=500&q=80',
+  'https://images.unsplash.com/photo-1498551172505-8ee7ad69f235?w=500&q=80',
+  'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=500&q=80',
+  'https://images.unsplash.com/photo-1596436889106-be35e843f974?w=500&q=80',
+  'https://images.unsplash.com/photo-1570158268183-d296b2892211?w=500&q=80',
+  'https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=500&q=80',
+];
 
-      // Animate cell in
-      cell.classList.add('animate-in');
+// Tile size ranges
+const SIZES = [
+  [160,200],[180,230],[140,180],[200,250],
+  [170,210],[150,200],[190,240],[160,220],
+];
 
-      // Flash effect
-      setTimeout(() => {
-        cell.classList.add('flashing');
-        setTimeout(() => {
-          cell.classList.remove('flashing');
-          cell.classList.add('loaded');
-        }, FLASH_DURATION);
-      }, 500);
+// Grid layout: place tiles to cover full viewport with slight overlap
+// Divide screen into a loose grid, place one tile per cell with jitter
+const COLS = 6, ROWS = 4;
+const CW = W / COLS, CH = H / ROWS;
 
-      // Queue next
-      setTimeout(() => animateCell(index + 1), DELAY_BETWEEN);
-    }
+const finalPositions = [];
 
-    // Start sequence after a short initial pause
-    setTimeout(() => animateCell(0), 600);
+for(let r=0; r<ROWS; r++){
+  for(let c=0; c<COLS; c++){
+    const [tw,th] = SIZES[(r*COLS+c) % SIZES.length];
+    // center of cell + random jitter
+    const cx = c * CW + CW/2 - tw/2 + (Math.random()-.5) * CW * .5;
+    const cy = r * CH + CH/2 - th/2 + (Math.random()-.5) * CH * .5;
+    const rot = (Math.random()-.5) * 10; // slight random tilt
+    finalPositions.push({ x: cx, y: cy, w: tw, h: th, rot });
+  }
+}
 
-    // Also trigger hero text reveal after all images
-    const totalTime = 600 + (cells.length * DELAY_BETWEEN) + 300;
-    setTimeout(() => {
-      heroText.classList.add('hero-ready');
-    }, totalTime);
-  </script>
+// Extra tiles to fill gaps — scatter around edges
+const EXTRAS = 8;
+for(let i=0; i<EXTRAS; i++){
+  const [tw,th] = SIZES[i % SIZES.length];
+  finalPositions.push({
+    x: Math.random() * (W - tw),
+    y: Math.random() * (H - th),
+    w: tw, h: th,
+    rot: (Math.random()-.5) * 14,
+  });
+}
+
+// Shuffle src assignment
+const shuffledSrcs = [...SRCS].sort(()=>Math.random()-.5);
+const tiles = [];
+
+finalPositions.forEach((pos, i) => {
+  const div = document.createElement('div');
+  div.className = 'tile';
+  div.style.cssText = `
+    width:${pos.w}px;
+    height:${pos.h}px;
+    left:${pos.x}px;
+    top:${pos.y}px;
+  `;
+
+  const img = document.createElement('img');
+  img.src = shuffledSrcs[i % shuffledSrcs.length];
+  img.alt = '';
+  div.appendChild(img);
+  stage.appendChild(div);
+  tiles.push({ el: div, pos });
+});
+
+// ── POP-IN SEQUENCE ──────────────────────────────
+// Each tile bursts in from a random far-off direction
+function randomOrigin(pos){
+  const side = Math.floor(Math.random()*4);
+  const margin = 300;
+  if(side===0) return { x: pos.x, y: -pos.h - margin };          // top
+  if(side===1) return { x: W + margin, y: pos.y };               // right
+  if(side===2) return { x: pos.x, y: H + margin };               // bottom
+  return { x: -pos.w - margin, y: pos.y };                       // left
+}
+
+const STEP = 80; // ms between each tile
+
+function launch(){
+  // shuffle tiles for organic order
+  const order = [...tiles].sort(()=>Math.random()-.5);
+
+  order.forEach((t, i) => {
+    const origin = randomOrigin(t.pos);
+
+    // place at origin instantly (no transition)
+    t.el.style.transition = 'none';
+    t.el.style.transform = `translate(${origin.x - t.pos.x}px, ${origin.y - t.pos.y}px) rotate(${(Math.random()-.5)*30}deg) scale(0.5)`;
+    t.el.style.opacity = '0';
+
+    setTimeout(()=>{
+      // fly to final position
+      t.el.style.transition = `transform ${0.55 + Math.random()*.25}s cubic-bezier(0.22,1,0.36,1), opacity 0.35s ease`;
+      t.el.style.transform = `translate(0,0) rotate(${t.pos.rot}deg) scale(1)`;
+      t.el.style.opacity = '1';
+      t.el.classList.add('popped');
+    }, i * STEP);
+  });
+
+  // once all tiles land, reveal oval
+  const totalTime = order.length * STEP + 700;
+  setTimeout(()=>{
+    oval.classList.add('reveal');
+  }, totalTime);
+}
+
+// small delay on load
+setTimeout(launch, 400);
+
+// ── Scroll reveal
+const io = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); }});
+},{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
 </body>
 </html>
